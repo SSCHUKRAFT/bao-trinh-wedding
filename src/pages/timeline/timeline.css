@@ -1,0 +1,24 @@
+.timeline {
+    width: 100vw;
+    min-height: 100vh;
+    font-family: Overpass;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    color: black;
+    text-align: center;
+}
+
+.timeline-title-txt {
+    padding-top: 20%;
+}
+
+.timeline-name-txt {
+    font-size: 20px;
+}
+
+.timeline-wedding-day {
+    font-family: Alexbrush;
+    font-size: 64px;
+}

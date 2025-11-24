@@ -1,0 +1,32 @@
+html, body, :root {
+  overflow-y: scroll;
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+
+.App {
+  min-width: 100vw;
+}
+
+.side-bar {
+  position:static;
+}
+
+@font-face {
+  font-family: Abel;
+  src: url(./assets/Abel-Regular.ttf);
+}
+
+@font-face {
+  font-family: AlexBrush;
+  src: url(./assets/AlexBrush-Regular.ttf);
+}
+
+@font-face {
+  font-family: Overpass;
+  src: url(./assets/Overpass.ttf);
+}

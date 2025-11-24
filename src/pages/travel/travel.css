@@ -1,0 +1,41 @@
+.travel {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Overpass;
+    text-align: center;
+}
+
+.travel-title {
+    text-decoration: underline;
+    font-size: 34px;
+    padding-top: 15%;
+}
+
+.airport, .hotel {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 5%;
+    width: 90%;
+}
+
+.airport-title-txt, .hotel-title-txt {
+    font-size: 24px;
+    text-align: center;
+    padding-left: 2%;
+    height: 5vh;
+    display: flex;
+    align-items: center;
+}
+
+.airports, .hotels {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    padding-top: 5%;
+}

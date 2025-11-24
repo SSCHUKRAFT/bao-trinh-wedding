@@ -1,0 +1,64 @@
+.party {
+    width: 100vw;
+    height: 130vh;
+    font-family: Overpass;
+    display: flex;
+    align-content: center;
+    color: white;
+}
+
+.party-bg {
+    background: url(../../assets/page-backgrounds/rsvp-bg.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    background-position: center;
+    position: relative;
+}
+
+.party-dark-filter {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.075);
+    z-index: 1;
+}
+
+.party-introducing {
+    width: 100%;
+    text-align: center;
+    font-size: 28px;
+    padding-top: 20%;
+    z-index: 2;
+    position: relative;
+    -webkit-text-stroke: 1.5px rgba(0, 0, 0, 0.255);
+    text-shadow: 0px 6px 4px rgba(0, 0, 0, 0.25);
+}
+
+.party-title {
+    width: 100%;
+    text-align: center;
+    font-size: 42px;
+    z-index: 2;
+    position: relative;
+    -webkit-text-stroke: 2px rgba(0, 0, 0, 0.255);
+    text-shadow: 0px 6px 4px rgba(0, 0, 0, 0.25);
+}
+
+.tabs-container {
+    width: 100%;
+    z-index: 2;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
+}
+
+.party-members {
+    width: 100vw;
+    height: 80%;
+    display: flex;
+    flex-wrap: wrap;
+}

@@ -1,0 +1,35 @@
+.countdown-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+    font-family: Abel;
+    color: white;
+    font-size: 32px;
+    z-index: 2;
+}
+
+.countdown-title {
+    width: 100%;
+    text-align: center;
+}
+
+.countdown-values-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    background-color: rgba(0, 0, 0, 0.452);
+    border-radius: 20px;
+}
+
+.countdown-value {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 24px;
+}
