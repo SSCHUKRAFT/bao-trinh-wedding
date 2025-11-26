@@ -54,7 +54,7 @@ const Home = () => {
       <div className="home-txt">
         <CSSTransition in={homeTxtFadeIn} appear={true} timeout={2000} classNames="fade" onEntered={handleHomeTextEntered}>
           <div className="home-text-wrapper">
-            <div className="home-txt-title">Bao<br/>&<br/>Trinh</div>
+            <div className="home-txt-title">Bao Mai<br/>&<br/>Trinh Nguyen</div>
             <div className="home-txt-date">07 . 25 . 2026</div>
           </div>
         </CSSTransition>

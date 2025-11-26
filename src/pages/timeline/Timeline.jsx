@@ -18,7 +18,7 @@ const Timeline = () => {
     <div className="timeline">
       <div style={bgStyles}>
         <div className="timeline-title-txt">
-          <div className="timeline-name-txt">Vu & Anh's</div>
+          <div className="timeline-name-txt">Bao & Trinh's</div>
           <div className="timeline-wedding-day">Wedding Day</div>
         </div>
         <TimelineSvg />
