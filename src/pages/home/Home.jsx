@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import { CSSTransition } from 'react-transition-group'
 import './home.css';
-import Horizontal1 from '../../assets/home-photos/horizontal1.jpg'
-import Horizontal2 from '../../assets/home-photos/horizontal2.jpg'
-import Vertical1 from '../../assets/home-photos/vertical1.jpg'
-import Vertical2 from '../../assets/home-photos/vertical2.jpg'
+import Horizontal1 from '../../assets/home-photos/horizontal1.jpg';
+import Horizontal2 from '../../assets/home-photos/horizontal2.jpg';
+import Vertical1 from '../../assets/home-photos/vertical1.jpg';
+import Vertical2 from '../../assets/home-photos/vertical2.jpg';
+import Vertical3 from '../../assets/home-photos/vertical3.jpeg';
+import Vertical4 from '../../assets/home-photos/vertical4.jpeg';
+import Vertical5 from '../../assets/home-photos/vertical5.jpeg';
+import Vertical6 from '../../assets/home-photos/vertical6.jpeg';
+import Vertical7 from '../../assets/home-photos/vertical7.jpeg';
 import HomeSlideshow from '../../components/HomeSlideshow';
 import HomeCountdown from '../../components/HomeCountdown';
 
@@ -28,6 +33,31 @@ const images = [
     src: Vertical2,
     alt: "Slide 4",
     className: "slide4"
+  },
+  {
+    src: Vertical3,
+    alt: "Slide 5",
+    className: "slide5"
+  },
+  {
+    src: Vertical4,
+    alt: "Slide 6",
+    className: "slide6"
+  },
+  {
+    src: Vertical5,
+    alt: "Slide 7",
+    className: "slide7"
+  },
+  {
+    src: Vertical6,
+    alt: "Slide 8",
+    className: "slide8"
+  },
+  {
+    src: Vertical7,
+    alt: "Slide 9",
+    className: "slide9"
   }
 ]
 

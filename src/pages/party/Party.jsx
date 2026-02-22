@@ -4,18 +4,17 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import PartyMember from '../../components/PartyMember';
 
-import Trang from '../../assets/wedding-party-photos/trang-circle.png';
-import Linh from '../../assets/wedding-party-photos/linh-circle.png';
-import Lilly from '../../assets/wedding-party-photos/lilly-circle.png';
-import Bich from '../../assets/wedding-party-photos/bich-circle.png';
-import Quyen from '../../assets/wedding-party-photos/quyen-circle.png';
-import Katelyn from '../../assets/wedding-party-photos/katelyn-circle.png';
-import Yilmaz from '../../assets/wedding-party-photos/yilmaz-circle.png';
-import Minh from '../../assets/wedding-party-photos/minh-circle.png';
-import Daniel from '../../assets/wedding-party-photos/daniel-circle.png';
-import Quinton from '../../assets/wedding-party-photos/quinton-circle.png';
-import Andy from '../../assets/wedding-party-photos/andy-circle.png';
-import Christopher from '../../assets/wedding-party-photos/christopher-circle.png';
+import Trang from '../../assets/wedding-party-photos/Trang Mai-modified.png';
+import Linh from '../../assets/wedding-party-photos/Cuu Mai-modified.png';
+import Anh from '../../assets/wedding-party-photos/Anh Mai-modified.png';
+import Miuly from '../../assets/wedding-party-photos/Miuly Ha-modified.png';
+import Kathy from '../../assets/wedding-party-photos/Kathy Vu-modified.png';
+import Chelsea from '../../assets/wedding-party-photos/Chelsea Nguyen-modified.png';
+import Vu from '../../assets/wedding-party-photos/Vu Dang-modified.png';
+import Sean from '../../assets/wedding-party-photos/Sean-modified.png';
+import Kevin from '../../assets/wedding-party-photos/Kevin Truong-modified.png';
+import Vinh from '../../assets/wedding-party-photos/Vinh Le-modified.png';
+import Phuc from '../../assets/wedding-party-photos/Phuc Nguyen-modified.png';
 
 const Party = () => {
   const [party, setParty] = useState(0);
@@ -39,20 +38,20 @@ const Party = () => {
           {party === 0 ? 
             <div className="party-members">
               <PartyMember image={Trang} name="Trang Mai" role="Maid of Honor" />
+              <PartyMember image={Anh} name="Anh Mai" />
               <PartyMember image={Linh} name="Linh Mai" />
-              <PartyMember image={Lilly} name="Lilly Nguyen" />
-              <PartyMember image={Bich} name="Bich Pham" />
-              <PartyMember image={Quyen} name="Quyen Pham" />
-              <PartyMember image={Katelyn} name="Katelyn Dang" />
+              <PartyMember image={Miuly} name="Miuly Ha" />
+              <PartyMember image={Kathy} name="Kathy Vu" />
+              <PartyMember image={Chelsea} name="Chelsea Nguyen" />
             </div>
             :
             <div className="party-members">
-              <PartyMember image={Yilmaz} name="Yilmaz Yoruk" role="Best Man" />
-              <PartyMember image={Minh} name="Minh Huynh" />
-              <PartyMember image={Daniel} name="Daniel Le" />
-              <PartyMember image={Quinton} name="Quinton Dang" />
-              <PartyMember image={Andy} name="Andy Dao" />
-              <PartyMember image={Christopher} name="Chris Kieliszak" />
+              <PartyMember image={Vu} name="Vu Dang" role="Best Man" />
+              <PartyMember image={Sean} name="Sean Schukraft" />
+              <PartyMember image={Kevin} name="Kevin Truong" />
+              <PartyMember image={Vinh} name="Vinh Le" />
+              <PartyMember image={Phuc} name="Phuc Nguyen" />
+              {/* <PartyMember image={Christopher} name="Chris Kieliszak" /> */}
             </div>
           }
         </div>
