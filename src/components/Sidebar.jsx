@@ -2,7 +2,7 @@ import React from 'react';
 import './sidebar.css';
 import Icon from "../assets/sidebar-ring.svg"
 import { AiFillHome } from "react-icons/ai";
-import { BiNotepad, BiTimeFive, BiParty } from "react-icons/bi";
+import { BiNotepad, BiTimeFive, BiParty, BiPhotoAlbum } from "react-icons/bi";
 import { ImAirplane } from "react-icons/im";
 import { NavLink, useLocation } from 'react-router-dom';
 import Slide from '@mui/material/Slide';
@@ -39,6 +39,11 @@ function Sidebar({children, sidebarOpen, setSidebarOpen}) {
       path:"/weddingParty",
       name:"Party",
       icon:<BiParty size={30}/>
+    },
+    {
+      path:"/gallery",
+      name:"Gallery",
+      icon:<BiPhotoAlbum size={30}/>
     }
   ];
 
