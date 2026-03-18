@@ -4,7 +4,6 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
-// import emailjs from "@emailjs/browser";
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from '@mui/material/Radio';
@@ -17,6 +16,9 @@ function RsvpForm() {
   const [allergyRadios, setAllergyRadios] = useState(Array(numGuests).fill(true))
   const [allergies, setAllergies] = useState(Array(numGuests).fill(""));
   const [loading, setLoading] = useState(false);
+
+  const rsvpTextEndpoint = process.env.REACT_APP_RSVP_TEXT_ENDPOINT || "/.netlify/functions/rsvp-text";
+  const alphabeticOnlyPattern = /[^a-zA-Z]/g;
 
   function handleNumGuestsChange(event) {
     const newNumGuests = parseInt(event.target.value);
@@ -57,13 +59,13 @@ function RsvpForm() {
 
   const handleFirstNameChange = (event, index) => {
     const newFirstNames = [...firstNames];
-    newFirstNames[index] = event.target.value;
+    newFirstNames[index] = event.target.value.replace(alphabeticOnlyPattern, "");
     setFirstNames(newFirstNames);
   }
 
   const handleLastNameChange = (event, index) => {
     const newLastNames = [...lastNames];
-    newLastNames[index] = event.target.value;
+    newLastNames[index] = event.target.value.replace(alphabeticOnlyPattern, "");
     setLastNames(newLastNames);
   }
 
@@ -85,37 +87,58 @@ function RsvpForm() {
     setAllergies(newAllergies);
   }
 
-  function handleFormSubmit(event) {
+  async function handleFormSubmit(event) {
     event.preventDefault();
+
+    if (firstNames.some((name) => !name.trim()) || lastNames.some((name) => !name.trim())) {
+      alert("Please ensure each guest has both a first and last name before submitting.");
+      return;
+    }
+
     setLoading(true);
 
-    // // Check if any required fields are null
-    // if (firstNames.includes("") || lastNames.includes("")) {
-    //   alert("Please ensure first and last name(s) are filled out before submitting.");
-    //   setLoading(false);
-    //   return;
-    // }
+    const guestList = Array.from({ length: numGuests }, (_, i) => {
+      const hasAllergies = !allergyRadios[i];
+      const allergyValue = hasAllergies ? allergies[i].trim() || "Not provided" : "None";
 
-    // const templateParams = {
-    //   guestCount: numGuests,
-    //   guestList: Array(numGuests).fill().map((_, i) => (
-    //     `Guest ${i + 1}: ${firstNames[i]} ${lastNames[i]}, Food allergies: ${allergies[i]}`
-    //   )).join('\n\n')
-    // };
+      return {
+        guestNumber: i + 1,
+        firstName: firstNames[i].trim(),
+        lastName: lastNames[i].trim(),
+        allergies: allergyValue,
+      };
+    });
 
+    try {
+      const response = await fetch(rsvpTextEndpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          guestCount: numGuests,
+          guests: guestList,
+        }),
+      });
 
-    // emailjs.send('service_yuq2dkl', 'template_zj5oroc', templateParams, 'euCgll_J6Ylx_2x2d')
-    //   .then((response) => {
-    //     console.log('SUCCESS!', response.status, response.text);
-    //     alert("Your RSVP was successfully received. We can't wait to see you there!" );
-    //   }, (error) => {
-    //     console.log('FAILED...', error);
-    //     alert('Failed to submit RSVP. Please try again.');
-    //   })
-    //   .finally(() => {
-    //     setLoading(false);
-    //   });
-    alert("Sorry, but the time to RSVP has expired. Feel free to contact Vu at (585) 766-4899 or Anh at (585) 978-0029")
+      if (!response.ok) {
+        const errorPayload = await response.json().catch(() => null);
+        const errorMessage = errorPayload?.error || `RSVP text request failed with status ${response.status}`;
+        throw new Error(errorMessage);
+      }
+
+      alert("Your RSVP was successfully received. We can't wait to see you there!");
+      setNumGuests(1);
+      setFirstNames([""]);
+      setLastNames([""]);
+      setAllergyRadios([true]);
+      setAllergies([""]);
+    } catch (error) {
+      console.error("Failed to submit RSVP text.", error);
+      alert(error.message || "Failed to submit RSVP. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -144,6 +167,8 @@ function RsvpForm() {
                     variant="outlined"
                     size="small" 
                     sx={{ width: '100%' }} 
+                    value={firstNames[i]}
+                    inputProps={{ pattern: "[A-Za-z]+" }}
                     onChange={(event) => handleFirstNameChange(event, i)}
                   />
                 </div>
@@ -153,6 +178,8 @@ function RsvpForm() {
                     variant="outlined" 
                     size="small" 
                     sx={{ width: '100%' }} 
+                    value={lastNames[i]}
+                    inputProps={{ pattern: "[A-Za-z]+" }}
                     onChange={(event) => handleLastNameChange(event, i)} 
                   />
                 </div>
@@ -177,6 +204,7 @@ function RsvpForm() {
                       size="small" 
                       sx={{ width: '100%' }} 
                       disabled={allergyRadios[i]}
+                      value={allergies[i]}
                       onChange={(event) => handleAllergyChange(event, i)}
                     />
                   </div>
