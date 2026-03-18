@@ -70,7 +70,7 @@ exports.handler = async (event) => {
   }
 
   const messageBody = [
-    "New RSVP submission",
+    "New RSVP submission! 🎉",
     `Guest count: ${guestCount}`,
     "",
     ...formattedGuests,
