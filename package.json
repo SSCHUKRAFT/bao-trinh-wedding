@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@mui/material": "^5.11.14",
@@ -14,8 +15,7 @@
     "react-material-ui-form": "^1.1.7",
     "react-router-dom": "^6.9.0",
     "react-scripts": "^5.0.1",
-    "react-swipeable-views": "^0.14.1",
-    "twilio": "^5.13.0"
+    "react-swipeable-views": "^0.14.1"
   },
   "scripts": {
     "start": "react-scripts start",

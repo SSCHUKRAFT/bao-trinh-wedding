@@ -1,4 +1,5 @@
 import { useState } from "react";
+import emailjs from "@emailjs/browser";
 import './rsvpform.css'
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
@@ -17,8 +18,10 @@ function RsvpForm() {
   const [allergies, setAllergies] = useState(Array(numGuests).fill(""));
   const [loading, setLoading] = useState(false);
 
-  const rsvpTextEndpoint = process.env.REACT_APP_RSVP_TEXT_ENDPOINT || "/.netlify/functions/rsvp-text";
   const alphabeticOnlyPattern = /[^a-zA-Z]/g;
+  const emailJsPublicKey = process.env.REACT_APP_EMAILJS_PUBLIC_KEY;
+  const emailJsServiceId = process.env.REACT_APP_EMAILJS_SERVICE_ID;
+  const emailJsTemplateId = process.env.REACT_APP_EMAILJS_TEMPLATE_ID;
 
   function handleNumGuestsChange(event) {
     const newNumGuests = parseInt(event.target.value);
@@ -109,23 +112,31 @@ function RsvpForm() {
       };
     });
 
-    try {
-      const response = await fetch(rsvpTextEndpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          guestCount: numGuests,
-          guests: guestList,
-        }),
-      });
+    const guestSummary = guestList
+      .map(
+        (guest) =>
+          `Guest ${guest.guestNumber}: ${guest.firstName} ${guest.lastName} | Allergies: ${guest.allergies}`
+      )
+      .join("\n");
 
-      if (!response.ok) {
-        const errorPayload = await response.json().catch(() => null);
-        const errorMessage = errorPayload?.error || `RSVP text request failed with status ${response.status}`;
-        throw new Error(errorMessage);
+    try {
+      if (!emailJsPublicKey || !emailJsServiceId || !emailJsTemplateId) {
+        throw new Error("EmailJS is not configured. Please set the EmailJS environment variables.");
       }
+
+      await emailjs.send(
+        emailJsServiceId,
+        emailJsTemplateId,
+        {
+          guest_count: numGuests,
+          guests: guestSummary,
+          guest_summary: guestSummary,
+          message: `New RSVP submission!\nGuest count: ${numGuests}\n\n${guestSummary}`,
+        },
+        {
+          publicKey: emailJsPublicKey,
+        }
+      );
 
       alert("Your RSVP was successfully received. We can't wait to see you there!");
       setNumGuests(1);
@@ -134,7 +145,7 @@ function RsvpForm() {
       setAllergyRadios([true]);
       setAllergies([""]);
     } catch (error) {
-      console.error("Failed to submit RSVP text.", error);
+      console.error("Failed to submit RSVP email.", error);
       alert(error.message || "Failed to submit RSVP. Please try again.");
     } finally {
       setLoading(false);
