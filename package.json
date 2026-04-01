@@ -6,6 +6,8 @@
     "@emailjs/browser": "^4.4.1",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@mantine/core": "^5.10.5",
+    "@mantine/hooks": "^5.10.5",
     "@mui/material": "^5.11.14",
     "depcheck": "^1.4.3",
     "material-ui-nested-menu-item": "^1.0.2",

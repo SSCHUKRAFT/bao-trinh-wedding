@@ -1,9 +1,7 @@
 .party {
-    width: 100vw;
-    height: 130vh;
+    width: 100%;
+    min-height: 100vh;
     font-family: Overpass;
-    display: flex;
-    align-content: center;
     color: white;
 }
 
@@ -11,54 +9,96 @@
     background: url(../../assets/page-backgrounds/party-bg.jpg);
     background-size: cover;
     background-repeat: no-repeat;
-    height: 100%;
+    min-height: 100vh;
     background-position: center;
     position: relative;
+    padding: 88px 0 72px;
 }
 
 .party-dark-filter {
     height: 100%;
     width: 100%;
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.075);
+    inset: 0;
+    background:
+        linear-gradient(180deg, rgba(12, 12, 12, 0.18) 0%, rgba(12, 12, 12, 0.7) 55%, rgba(12, 12, 12, 0.86) 100%);
     z-index: 1;
 }
 
-.party-introducing {
-    width: 100%;
-    text-align: center;
-    font-size: 28px;
-    padding-top: 20%;
-    z-index: 2;
+.party-content {
     position: relative;
-    -webkit-text-stroke: 1.5px rgba(0, 0, 0, 0.255);
-    text-shadow: 0px 6px 4px rgba(0, 0, 0, 0.25);
+    z-index: 2;
+}
+
+.party-heading {
+    text-align: center;
+    max-width: 640px;
+}
+
+.party-introducing {
+    font-size: clamp(20px, 5vw, 28px);
+    color: #f3dfc3;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
 }
 
 .party-title {
-    width: 100%;
-    text-align: center;
-    font-size: 42px;
-    z-index: 2;
-    position: relative;
-    -webkit-text-stroke: 2px rgba(0, 0, 0, 0.255);
-    text-shadow: 0px 6px 4px rgba(0, 0, 0, 0.25);
+    margin: 0;
+    font-size: clamp(42px, 10vw, 64px);
+    line-height: 0.95;
+    color: #fffaf2;
+    text-shadow: 0 16px 26px rgba(0, 0, 0, 0.26);
 }
 
-.tabs-container {
-    width: 100%;
-    z-index: 2;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: fit-content;
+.party-subtitle {
+    margin: 0;
+    max-width: 34rem;
+    font-size: clamp(15px, 3.8vw, 18px);
+    line-height: 1.6;
+    color: rgba(255, 250, 242, 0.88);
 }
 
-.party-members {
-    width: 100vw;
-    height: 80%;
-    display: flex;
-    flex-wrap: wrap;
+.party-panel {
+    width: min(100%, 980px);
+    padding: 18px;
+    border-radius: 34px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 26px 60px rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.party-toggle {
+    margin-bottom: 18px;
+}
+
+.party-toggle .mantine-SegmentedControl-root {
+    background: rgba(14, 14, 14, 0.5);
+    padding: 6px;
+}
+
+.party-toggle .mantine-SegmentedControl-label {
+    color: rgb(0, 0, 0);
+    font-weight: 600;
+}
+
+.party-toggle .mantine-SegmentedControl-indicator {
+    background: linear-gradient(135deg, rgba(255, 248, 240, 0.98) 0%, rgba(239, 211, 181, 0.94) 100%);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+.party-toggle .mantine-SegmentedControl-label[data-active='true'] {
+    color: #6f472d;
+}
+
+@media (min-width: 768px) {
+    .party-bg {
+        padding: 104px 0 96px;
+    }
+
+    .party-panel {
+        padding: 24px;
+    }
 }

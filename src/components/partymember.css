@@ -6,10 +6,24 @@
     height: 2%;
     padding: 5%;
     padding-bottom: 0;
+    box-sizing: border-box;
+}
+
+.party-member-img-wrapper,
+.party-member-txt {
+    width: 100%;
+    max-width: 280px;
+    background-color: rgba(0, 0, 0, 0.45);
+}
+
+.party-member-img-wrapper {
+    border-radius: 20px 20px 0 0;
+    overflow: hidden;
 }
 
 .party-member-container img {
     max-width: 100%;
+    display: block;
 }
 
 .party-member-txt {
@@ -17,4 +31,7 @@
     white-space: nowrap;
     -webkit-text-stroke: 1.5px rgba(0, 0, 0, 0.255);
     text-align: center;
+    border-radius: 0 0 20px 20px;
+    padding: 0.85rem 1rem 1rem;
+    box-sizing: border-box;
 }

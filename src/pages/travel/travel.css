@@ -1,41 +1,73 @@
 .travel {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    width: 100%;
+    min-height: 100vh;
     font-family: Overpass;
+}
+
+.travel-bg {
+    position: relative;
+    padding: 92px 0 88px;
+    background:
+        radial-gradient(circle at top left, rgba(231, 188, 198, 0.5) 0%, rgba(231, 188, 198, 0) 32%),
+        radial-gradient(circle at 85% 20%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0) 28%),
+        linear-gradient(180deg, #fffafa 0%, #fff6f7 44%, #f6dde2 100%);
+}
+
+.travel-content {
+    position: relative;
+    z-index: 1;
+}
+
+.travel-heading {
     text-align: center;
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.travel-kicker {
+    font-size: clamp(0.95rem, 3.4vw, 1.1rem);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #b57984;
 }
 
 .travel-title {
-    text-decoration: underline;
-    font-size: 34px;
-    padding-top: 15%;
+    margin: 0;
+    font-size: clamp(2.8rem, 12vw, 4.4rem);
+    line-height: 0.95;
+    color: #7a4753;
+    font-family: Cormorant Garamond, serif;
+    text-shadow: 0 16px 26px rgba(181, 121, 132, 0.14);
 }
 
-.airport, .hotel {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    flex-wrap: wrap;
-    padding: 5%;
-    width: 90%;
+.travel-subtitle {
+    margin: 0;
+    font-size: clamp(0.98rem, 4vw, 1.15rem);
+    line-height: 1.7;
+    color: rgba(108, 73, 80, 0.84);
+    max-width: 34rem;
 }
 
-.airport-title-txt, .hotel-title-txt {
-    font-size: 24px;
-    text-align: center;
-    padding-left: 2%;
-    height: 5vh;
-    display: flex;
-    align-items: center;
-}
-
-.airports, .hotels {
+.travel-section {
     display: flex;
     flex-direction: column;
-    height: 100%;
-    width: 100%;
-    padding-top: 5%;
+    gap: 18px;
+}
+
+.travel-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.travel-section-title {
+    color: #7a4753;
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+    font-weight: 600;
+}
+
+@media (min-width: 768px) {
+    .travel-bg {
+        padding: 104px 0 96px;
+    }
 }
