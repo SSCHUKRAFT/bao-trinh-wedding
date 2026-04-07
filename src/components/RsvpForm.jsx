@@ -1,33 +1,85 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
-import './rsvpform.css'
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import TextField from '@mui/material/TextField';
-import FormControl from '@mui/material/FormControl';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Radio from '@mui/material/Radio';
-import CircularProgress from '@mui/material/CircularProgress';
+import {
+  Button,
+  Divider,
+  Group,
+  Notification,
+  Paper,
+  Radio,
+  Select,
+  SimpleGrid,
+  Stack,
+  Text,
+  TextInput,
+  Textarea,
+} from "@mantine/core";
+import "./rsvpform.css";
+
+const GUEST_OPTIONS = Array.from({ length: 10 }, (_, index) => ({
+  value: String(index + 1),
+  label: String(index + 1),
+}));
+
+const SEND_RSVP_EMAIL = true;
+
+const fieldStyles = {
+  label: { color: "#744b5e", fontWeight: 600, marginBottom: 6 },
+  input: {
+    background: "#fffdfd",
+    border: "1px solid rgba(190, 145, 162, 0.18)",
+    color: "#5e3a4a",
+    "&:focus": {
+      borderColor: "#c98598",
+      boxShadow: "0 0 0 3px rgba(201, 133, 152, 0.16)",
+    },
+  },
+};
 
 function RsvpForm() {
   const [numGuests, setNumGuests] = useState(1);
-  const [firstNames, setFirstNames] = useState(Array(numGuests).fill(""));
-  const [lastNames, setLastNames] = useState(Array(numGuests).fill(""));
-  const [allergyRadios, setAllergyRadios] = useState(Array(numGuests).fill(true))
-  const [allergies, setAllergies] = useState(Array(numGuests).fill(""));
+  const [firstNames, setFirstNames] = useState([""]);
+  const [lastNames, setLastNames] = useState([""]);
+  const [allergyRadios, setAllergyRadios] = useState([true]);
+  const [allergies, setAllergies] = useState([""]);
   const [loading, setLoading] = useState(false);
+  const [notification, setNotification] = useState(null);
+  const notificationTimeoutRef = useRef(null);
 
   const alphabeticOnlyPattern = /[^a-zA-Z]/g;
   const emailJsPublicKey = process.env.REACT_APP_EMAILJS_PUBLIC_KEY;
   const emailJsServiceId = process.env.REACT_APP_EMAILJS_SERVICE_ID;
   const emailJsTemplateId = process.env.REACT_APP_EMAILJS_TEMPLATE_ID;
 
-  function handleNumGuestsChange(event) {
-    const newNumGuests = parseInt(event.target.value);
-    setNumGuests(newNumGuests);
+  function dismissActiveInput() {
+    const activeElement = document.activeElement;
+    if (activeElement && typeof activeElement.blur === "function") {
+      activeElement.blur();
+    }
+  }
 
-    setFirstNames(prevFirstNames => {
+  function showNotification(color, message) {
+    if (notificationTimeoutRef.current) {
+      clearTimeout(notificationTimeoutRef.current);
+    }
+
+    setNotification({ color, message });
+    notificationTimeoutRef.current = setTimeout(() => {
+      setNotification(null);
+      notificationTimeoutRef.current = null;
+    }, 6000);
+  }
+
+  function scrollPageToTop() {
+    window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    });
+  }
+
+  function resizeGuestFields(newNumGuests) {
+    setFirstNames((prevFirstNames) => {
       const newFirstNames = [...prevFirstNames];
       while (newFirstNames.length < newNumGuests) {
         newFirstNames.push("");
@@ -35,7 +87,7 @@ function RsvpForm() {
       return newFirstNames.slice(0, newNumGuests);
     });
 
-    setLastNames(prevLastNames => {
+    setLastNames((prevLastNames) => {
       const newLastNames = [...prevLastNames];
       while (newLastNames.length < newNumGuests) {
         newLastNames.push("");
@@ -43,7 +95,7 @@ function RsvpForm() {
       return newLastNames.slice(0, newNumGuests);
     });
 
-    setAllergyRadios(prevAllergyRadios => {
+    setAllergyRadios((prevAllergyRadios) => {
       const newAllergyRadios = [...prevAllergyRadios];
       while (newAllergyRadios.length < newNumGuests) {
         newAllergyRadios.push(true);
@@ -51,7 +103,7 @@ function RsvpForm() {
       return newAllergyRadios.slice(0, newNumGuests);
     });
 
-    setAllergies(prevAllergies => {
+    setAllergies((prevAllergies) => {
       const newAllergies = [...prevAllergies];
       while (newAllergies.length < newNumGuests) {
         newAllergies.push("");
@@ -60,38 +112,39 @@ function RsvpForm() {
     });
   }
 
-  const handleFirstNameChange = (event, index) => {
+  function handleNumGuestsChange(value) {
+    const newNumGuests = Number(value || 1);
+    setNumGuests(newNumGuests);
+    resizeGuestFields(newNumGuests);
+  }
+
+  const handleFirstNameChange = (value, index) => {
     const newFirstNames = [...firstNames];
-    newFirstNames[index] = event.target.value.replace(alphabeticOnlyPattern, "");
+    newFirstNames[index] = value.replace(alphabeticOnlyPattern, "");
     setFirstNames(newFirstNames);
-  }
+  };
 
-  const handleLastNameChange = (event, index) => {
+  const handleLastNameChange = (value, index) => {
     const newLastNames = [...lastNames];
-    newLastNames[index] = event.target.value.replace(alphabeticOnlyPattern, "");
+    newLastNames[index] = value.replace(alphabeticOnlyPattern, "");
     setLastNames(newLastNames);
-  }
+  };
 
-  const handleAllergyRadioChange = (event, index) => {
+  const handleAllergyRadioChange = (value, index) => {
     const newAllergyRadios = [...allergyRadios];
-    let booleanResp;
-    if (event.target.value === "true"){
-      booleanResp = true;
-    }else {
-      booleanResp = false;
-    }
-    newAllergyRadios[index] = booleanResp;
+    newAllergyRadios[index] = value === "no";
     setAllergyRadios(newAllergyRadios);
-  }
+  };
 
-  const handleAllergyChange = (event, index) => {
+  const handleAllergyChange = (value, index) => {
     const newAllergies = [...allergies];
-    newAllergies[index] = event.target.value;
+    newAllergies[index] = value;
     setAllergies(newAllergies);
-  }
+  };
 
   async function handleFormSubmit(event) {
     event.preventDefault();
+    dismissActiveInput();
 
     if (firstNames.some((name) => !name.trim()) || lastNames.some((name) => !name.trim())) {
       alert("Please ensure each guest has both a first and last name before submitting.");
@@ -120,115 +173,246 @@ function RsvpForm() {
       .join("\n");
 
     try {
-      if (!emailJsPublicKey || !emailJsServiceId || !emailJsTemplateId) {
+      if (SEND_RSVP_EMAIL && (!emailJsPublicKey || !emailJsServiceId || !emailJsTemplateId)) {
         throw new Error("EmailJS is not configured. Please set the EmailJS environment variables.");
       }
 
-      await emailjs.send(
-        emailJsServiceId,
-        emailJsTemplateId,
-        {
-          guest_count: numGuests,
-          guests: guestSummary,
-          guest_summary: guestSummary,
-          message: `New RSVP submission!\nGuest count: ${numGuests}\n\n${guestSummary}`,
-        },
-        {
-          publicKey: emailJsPublicKey,
-        }
-      );
+      if (SEND_RSVP_EMAIL) {
+        await emailjs.send(
+          emailJsServiceId,
+          emailJsTemplateId,
+          {
+            guest_count: numGuests,
+            guests: guestSummary,
+            guest_summary: guestSummary,
+            message: `New RSVP submission!\nGuest count: ${numGuests}\n\n${guestSummary}`,
+          },
+          {
+            publicKey: emailJsPublicKey,
+          }
+        );
+      }
 
-      alert("Your RSVP was successfully received. We can't wait to see you there!");
+      showNotification("teal", "Your RSVP has been received. Thank you! 🎉");
       setNumGuests(1);
       setFirstNames([""]);
       setLastNames([""]);
       setAllergyRadios([true]);
       setAllergies([""]);
+      scrollPageToTop();
     } catch (error) {
       console.error("Failed to submit RSVP email.", error);
-      alert(error.message || "Failed to submit RSVP. Please try again.");
+      showNotification(
+        "red",
+        "We're sorry, something went wrong. Please contact Bao or Trinh if you continue to have issues."
+      );
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div className="form-container">
+    <form className="form-container" onSubmit={handleFormSubmit}>
+      {notification ? (
+        <div className="rsvp-notification-shell">
+          <Notification
+            className="rsvp-notification"
+            color={notification.color}
+            radius="lg"
+            disallowClose={false}
+            onClose={() => setNotification(null)}
+            styles={{
+              root: {
+                background: notification.color === "red" ? "rgba(123, 40, 54, 0.95)" : "rgba(52, 113, 92, 0.95)",
+                border: "1px solid rgba(255, 255, 255, 0.26)",
+                boxShadow: "0 18px 42px rgba(32, 18, 24, 0.24)",
+                backdropFilter: "blur(14px)",
+                WebkitBackdropFilter: "blur(14px)",
+              },
+              title: { color: "#fffaf7", fontWeight: 700 },
+              description: { color: "rgba(255, 250, 247, 0.92)", lineHeight: 1.5 },
+              closeButton: {
+                color: "#fffaf7",
+                "&:hover": { background: "rgba(255, 255, 255, 0.12)" },
+              },
+              icon: {
+                background: "rgba(255, 255, 255, 0.18)",
+                color: "#fffaf7",
+              },
+            }}
+          >
+            {notification.message}
+          </Notification>
+        </div>
+      ) : null}
+
       <div className="guest-select">
-        <div className="guest-select-text-label">How many guests are you bringing?</div>
+        <div className="guest-select-text-label">
+          <Text className="guest-select-eyebrow">Celebration Details</Text>
+          <Text className="guest-select-heading">How many guests are you bringing?</Text>
+        </div>
         <div className="guest-select-dropdown">
-          <Select value={numGuests} onChange={handleNumGuestsChange} size="small">
-            {[...Array(10)].map((_, i) => (
-              <MenuItem key={i} value={i + 1}>
-                {i + 1}
-              </MenuItem>
-            ))}
-          </Select>
+          <Select
+            data={GUEST_OPTIONS}
+            value={String(numGuests)}
+            onChange={handleNumGuestsChange}
+            radius="xl"
+            size="md"
+            aria-label="Number of guests"
+            styles={{
+              input: {
+                minHeight: 52,
+                background: "rgba(255, 247, 249, 0.96)",
+                border: "1px solid rgba(184, 132, 150, 0.24)",
+                color: "#744b5e",
+                fontWeight: 600,
+                boxShadow: "0 14px 30px rgba(105, 67, 82, 0.08)",
+                "&:focus": {
+                  borderColor: "#c98598",
+                  boxShadow: "0 0 0 3px rgba(201, 133, 152, 0.16)",
+                },
+              },
+              rightSection: {
+                color: "#bc7f95",
+              },
+              dropdown: {
+                background: "#fff7fb",
+                border: "1px solid rgba(184, 132, 150, 0.18)",
+                boxShadow: "0 22px 38px rgba(105, 67, 82, 0.14)",
+              },
+              item: {
+                color: "#744b5e",
+                fontWeight: 600,
+                "&[data-selected]": {
+                  background: "rgba(201, 133, 152, 0.16)",
+                  color: "#744b5e",
+                },
+                "&[data-hovered]": {
+                  background: "rgba(201, 133, 152, 0.1)",
+                },
+                "&[data-selected][data-hovered], &[data-selected]:hover": {
+                  background: "rgba(201, 133, 152, 0.16)",
+                  color: "#744b5e",
+                },
+              },
+            }}
+          />
         </div>
       </div>
-      <div className="form-groups">
-        {[...Array(numGuests)].map((_, i) => (
-          <div key={i}>
-            <div className="form-group">
-              <div className="guest-num-txt">Guest {i + 1}</div>
-              <div className="name-fields">
-                <div className="name-field">
-                  <TextField
-                    label="First Name"
-                    variant="outlined"
-                    size="small" 
-                    sx={{ width: '100%' }} 
-                    value={firstNames[i]}
-                    inputProps={{ pattern: "[A-Za-z]+" }}
-                    onChange={(event) => handleFirstNameChange(event, i)}
-                  />
-                </div>
-                <div className="name-field">
-                  <TextField 
-                    label="Last Name" 
-                    variant="outlined" 
-                    size="small" 
-                    sx={{ width: '100%' }} 
-                    value={lastNames[i]}
-                    inputProps={{ pattern: "[A-Za-z]+" }}
-                    onChange={(event) => handleLastNameChange(event, i)} 
-                  />
-                </div>
+
+      <Stack spacing="lg" className="form-groups">
+        {Array.from({ length: numGuests }, (_, i) => (
+          <Paper
+            key={i}
+            radius={28}
+            p="lg"
+            className="guest-card"
+            sx={{
+              background: "rgba(255, 249, 251, 0.92)",
+              border: "1px solid rgba(190, 145, 162, 0.16)",
+              backdropFilter: "blur(10px)",
+              WebkitBackdropFilter: "blur(10px)",
+              boxShadow: "0 22px 42px rgba(105, 67, 82, 0.12)",
+            }}
+          >
+            <Stack spacing="md">
+              <div className="guest-card-header">
+                <Text className="guest-card-kicker">Guest {i + 1}</Text>
+                <Text className="guest-card-title">Guest Information</Text>
               </div>
-                <div className="allergy-selection">
-                  <div className="allergy-radio">
-                    <FormControl>
-                      <div className="allergy-radio-txt">Any food allergies?</div>
-                      <RadioGroup
-                        value={allergyRadios[i]}
-                        onChange={(event) => handleAllergyRadioChange(event, i)}
-                      >
-                        <FormControlLabel value={"true"} control={<Radio size="small" />} label="No" />
-                        <FormControlLabel value={"false"} control={<Radio size="small" />} label="Yes" />
-                      </RadioGroup>
-                    </FormControl>
-                  </div>
+
+              <SimpleGrid cols={2} spacing="md" breakpoints={[{ maxWidth: "sm", cols: 1 }]}>
+                <TextInput
+                  label="First Name"
+                  placeholder="First name"
+                  radius="md"
+                  size="md"
+                  value={firstNames[i]}
+                  onChange={(event) => handleFirstNameChange(event.currentTarget.value, i)}
+                  styles={fieldStyles}
+                />
+                <TextInput
+                  label="Last Name"
+                  placeholder="Last name"
+                  radius="md"
+                  size="md"
+                  value={lastNames[i]}
+                  onChange={(event) => handleLastNameChange(event.currentTarget.value, i)}
+                  styles={fieldStyles}
+                />
+              </SimpleGrid>
+
+              <div className="allergy-selection">
+                <div className="allergy-radio">
+                  <Text className="allergy-radio-txt">Any food allergies?</Text>
+                  <Radio.Group
+                    value={allergyRadios[i] ? "no" : "yes"}
+                    onChange={(value) => handleAllergyRadioChange(value, i)}
+                  >
+                    <Group mt="xs" spacing="xl" className="allergy-radio-options">
+                      <Radio
+                        value="no"
+                        label="No"
+                        color="pink"
+                        styles={{ label: { color: "#744b5e", fontWeight: 600 } }}
+                      />
+                      <Radio
+                        value="yes"
+                        label="Yes"
+                        color="pink"
+                        styles={{ label: { color: "#744b5e", fontWeight: 600 } }}
+                      />
+                    </Group>
+                  </Radio.Group>
+                </div>
+
+                {!allergyRadios[i] ? (
                   <div className="allergy-input">
-                    <TextField
-                      label="Allergy"
-                      variant="outlined"
-                      size="small" 
-                      sx={{ width: '100%' }} 
-                      disabled={allergyRadios[i]}
+                    <Textarea
+                      label="Allergy Details"
+                      placeholder="List allergies or dietary restrictions"
+                      minRows={2}
+                      autosize
+                      radius="md"
+                      size="md"
                       value={allergies[i]}
-                      onChange={(event) => handleAllergyChange(event, i)}
+                      onChange={(event) => handleAllergyChange(event.currentTarget.value, i)}
+                      styles={fieldStyles}
                     />
                   </div>
-                </div>
-              <div className="divider" />
-            </div>
-          </div>
+                ) : null}
+              </div>
+
+              {i < numGuests - 1 ? <Divider color="rgba(190, 145, 162, 0.18)" /> : null}
+            </Stack>
+          </Paper>
         ))}
-        <button onClick={handleFormSubmit}>
-          {loading ? <CircularProgress size={20}/> : "Submit"}
-        </button>
-      </div>
-    </div>
+
+        <Button
+          type="submit"
+          loading={loading}
+          radius="xl"
+          size="lg"
+          className="rsvp-submit-button"
+          sx={{
+            alignSelf: "center",
+            background: "linear-gradient(135deg, #c98598 0%, #d7a1b3 100%)",
+            color: "#fffaf5",
+            border: "2px solid rgba(255, 255, 255, 0.86)",
+            boxShadow: "0 18px 36px rgba(134, 81, 100, 0.24)",
+            transition: "transform 180ms ease, box-shadow 180ms ease",
+            "&:hover": {
+              background: "linear-gradient(135deg, #c98598 0%, #d7a1b3 100%)",
+              border: "2px solid rgba(255, 255, 255, 0.96)",
+              transform: "translateY(-1px)",
+              boxShadow: "0 22px 42px rgba(134, 81, 100, 0.28)",
+            },
+          }}
+        >
+          Submit RSVP
+        </Button>
+      </Stack>
+    </form>
   );
 }
 

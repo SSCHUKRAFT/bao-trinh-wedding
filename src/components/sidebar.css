@@ -1,7 +1,8 @@
 .container {
     display: flex;
     font-family: 'Abel';
-    height: 100vh;
+    min-height: 100vh;
+    height: auto;
     width: 100%;
 }
 

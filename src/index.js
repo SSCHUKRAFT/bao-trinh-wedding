@@ -15,19 +15,19 @@ const muiTheme = createTheme({
 });
 
 ReactDOM.render(
-  <ThemeProvider theme={muiTheme}>
-    <MantineProvider
-      withNormalizeCSS
-      withGlobalStyles
-      theme={{
-        colorScheme: 'light',
-        fontFamily: 'Overpass, sans-serif',
-        headings: { fontFamily: 'Cormorant Garamond, serif' },
-        primaryColor: 'orange',
-      }}
-    >
+  <MantineProvider
+    withNormalizeCSS
+    withGlobalStyles
+    theme={{
+      colorScheme: 'light',
+      fontFamily: 'Overpass, sans-serif',
+      headings: { fontFamily: 'Cormorant Garamond, serif' },
+      primaryColor: 'orange',
+    }}
+  >
+    <ThemeProvider theme={muiTheme}>
       <App />
-    </MantineProvider>
-  </ThemeProvider>,
+    </ThemeProvider>
+  </MantineProvider>,
   document.getElementById('root')
 );

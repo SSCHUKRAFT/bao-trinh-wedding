@@ -3,14 +3,20 @@
     min-height: 100vh;
     font-family: Overpass;
     color: white;
+    position: relative;
+    isolation: isolate;
+}
+
+.party::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: url(../../assets/page-backgrounds/party-bg.jpg) center 24% / cover no-repeat;
+    z-index: -2;
 }
 
 .party-bg {
-    background: url(../../assets/page-backgrounds/party-bg.jpg);
-    background-size: cover;
-    background-repeat: no-repeat;
     min-height: 100vh;
-    background-position: center;
     position: relative;
     padding: 88px 0 72px;
 }
@@ -94,6 +100,10 @@
 }
 
 @media (min-width: 768px) {
+    .party::before {
+        background-position: center center;
+    }
+
     .party-bg {
         padding: 104px 0 96px;
     }
