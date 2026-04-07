@@ -50,16 +50,25 @@
     z-index: 2;
 }
 
-.gallery-image {
+.gallery-media {
     position: relative;
     z-index: 3;
     width: 100%;
     height: auto;
     max-height: 100vh;
+    max-width: 100%;
     object-fit: contain;
+    display: block;
+}
+
+.gallery-image {
     user-select: none;
     -webkit-user-drag: none;
-    display: block;
+}
+
+.gallery-video {
+    width: auto;
+    background: rgba(0, 0, 0, 0.5);
 }
 
 .gallery-arrow {
@@ -95,42 +104,8 @@
     font-size: 2rem;
 }
 
-.gallery-controls-overlay {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 18px;
-    z-index: 5;
-    display: flex;
-    justify-content: center;
-    pointer-events: none;
-}
-
-.gallery-stepper {
-    background: rgba(0, 0, 0, 0.22) !important;
-    backdrop-filter: blur(8px);
-    border-radius: 999px;
-    padding: 6px 12px !important;
-    width: auto !important;
-    max-width: calc(100% - 32px);
-    pointer-events: auto;
-}
-
-.gallery-stepper .MuiMobileStepper-dots {
-    gap: 6px;
-}
-
-.gallery-stepper .MuiMobileStepper-dot {
-    background-color: rgba(255, 255, 255, 0.4);
-    margin: 0 !important;
-}
-
-.gallery-stepper .MuiMobileStepper-dotActive {
-    background-color: white;
-}
-
 @media (max-width: 768px) {
-    .gallery-image {
+    .gallery-media {
         max-height: 100vh;
     }
 
@@ -149,14 +124,5 @@
 
     .gallery-arrow svg {
         font-size: 1.6rem;
-    }
-
-    .gallery-controls-overlay {
-        bottom: 12px;
-    }
-
-    .gallery-stepper {
-        max-width: calc(100% - 20px);
-        padding: 4px 10px !important;
     }
 }
