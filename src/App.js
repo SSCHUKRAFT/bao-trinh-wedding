@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Home, Rsvp, Timeline, Travel, Party, Gallery } from './pages'
+import { Home, Rsvp, Timeline, Travel, Party, Gallery, Video } from './pages'
 import './App.css';
 import Sidebar from './components/Sidebar';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -18,6 +18,7 @@ function App() {
             <Route path="/travel"element={<Travel />} />
             <Route path="/weddingParty"element={<Party />} />
             <Route path="/gallery"element={<Gallery />} />
+            <Route path="/video"element={<Video />} />
           </Routes>
         </Sidebar>
       </BrowserRouter>
