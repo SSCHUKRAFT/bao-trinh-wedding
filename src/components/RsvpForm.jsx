@@ -46,7 +46,7 @@ function RsvpForm() {
   const [notification, setNotification] = useState(null);
   const notificationTimeoutRef = useRef(null);
 
-  const alphabeticOnlyPattern = /[^a-zA-Z]/g;
+  const disallowedNameCharactersPattern = /[^\p{L}\p{M}\s'’-]/gu;
   const emailJsPublicKey = process.env.REACT_APP_EMAILJS_PUBLIC_KEY;
   const emailJsServiceId = process.env.REACT_APP_EMAILJS_SERVICE_ID;
   const emailJsTemplateId = process.env.REACT_APP_EMAILJS_TEMPLATE_ID;
@@ -120,13 +120,13 @@ function RsvpForm() {
 
   const handleFirstNameChange = (value, index) => {
     const newFirstNames = [...firstNames];
-    newFirstNames[index] = value.replace(alphabeticOnlyPattern, "");
+    newFirstNames[index] = value.replace(disallowedNameCharactersPattern, "");
     setFirstNames(newFirstNames);
   };
 
   const handleLastNameChange = (value, index) => {
     const newLastNames = [...lastNames];
-    newLastNames[index] = value.replace(alphabeticOnlyPattern, "");
+    newLastNames[index] = value.replace(disallowedNameCharactersPattern, "");
     setLastNames(newLastNames);
   };
 
